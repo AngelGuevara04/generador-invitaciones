@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Graduación | Generación 2023 - 2026</title>
+    <meta name="description" content="Detalles de nuestra ceremonia de graduación. Programa del evento, ubicación e invitados.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animated">
+        <div class="blob blob-1" id="bgBlob1"></div>
+        <div class="blob blob-2" id="bgBlob2"></div>
+    </div>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <header class="hero glass-panel">
+            <div class="cap-icon">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path class="cap-top" d="M32 14 L8 26 L32 38 L56 26 Z"/>
+                    <path class="cap-base" d="M16 30 V42 C16 48 24 50 32 50 C40 50 48 48 48 42 V30 Z"/>
+                    <path class="cap-tassel-string" d="M32 26 L48 34 V48"/>
+                    <circle class="cap-button" cx="32" cy="26" r="2"/>
+                    <path class="cap-tassel" d="M46 48 H50 L52 56 H44 Z"/>
+                </svg>
+            </div>
+            <p class="frase-hero" id="webFrase">El esfuerzo ha dado sus frutos...</p>
+            <h1 class="main-title" id="webTitulo">Ceremonia de Graduación</h1>
+            <h2 class="subtitle" id="webGeneracion">Generación 2023 - 2026</h2>
+        </header>
+
+        <!-- Info Section -->
+        <section class="info-section glass-panel">
+            <div class="info-card">
+                <div class="icon">📅</div>
+                <h3>Cuándo</h3>
+                <p id="webCuando">30 de Noviembre<br>8:00 P.M.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">📍</div>
+                <h3>Dónde</h3>
+                <p id="webDonde">Escuela Telesecundaria Amado Nervo<br>Loma del Cojolite, Misantla, Ver.</p>
+                <a id="webMapa" href="https://maps.google.com/?q=" target="_blank" class="btn-location">Ver en Mapa</a>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="timeline-section glass-panel">
+            <h2 class="section-title">Programa del Evento</h2>
+            <div class="timeline" id="webPrograma">
+                <!-- Se llenará dinámicamente -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Entrada Bandera</h4>
+                        <p>Inicio de los honores a nuestro lábaro patrio.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Recorrido de la Escolta</h4>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Himno Nacional Mexicano</h4>
+                        <p>Entonación por todos los presentes.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Retiro de Bandera</h4>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Himno a Veracruz & Telesecundarias</h4>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>Entrega de Reconocimientos</h4>
+                        <p>Momento cumbre de nuestra generación.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Extra Fields Section (Dynamic) -->
+        <section id="extraFieldsSection" class="info-section" style="display: none; flex-direction: column; margin-bottom: 2rem;">
+            <!-- Dynamic cards will go here -->
+        </section>
+
+        <!-- Invitados Section -->
+        <section class="invitados-section glass-panel">
+            <h2 class="section-title">Invitados de Honor</h2>
+            <ul class="guest-list" id="webInvitados">
+                <!-- Dinámico -->
+            </ul>
+
+            <div class="padrino-highlight mt-4">
+                <h3>Padrino de Generación</h3>
+                <p class="padrino-name" id="webPadrino">Profr. Doroteo Guzmán Cayetano</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer text-center">
+            <p>¡Te esperamos para compartir este momento tan especial!</p>
+        </footer>
+    </main>
+
+    <script>
+        // Data Decoding
+        function loadData() {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#data=')) {
+                try {
+                    const base64Data = hash.replace('#data=', '');
+                    const jsonString = decodeURIComponent(escape(atob(base64Data)));
+                    const data = JSON.parse(jsonString);
+
+                    // Apply text
+                    document.getElementById('webFrase').innerText = data.frase || '';
+                    document.getElementById('webTitulo').innerText = data.titulo || 'Ceremonia de Graduación';
+                    document.getElementById('webGeneracion').innerText = 'Generación ' + (data.generacion || '');
+                    
+                    document.getElementById('webCuando').innerHTML = `${data.dia} de ${data.mes}<br>${data.hora}`;
+                    document.getElementById('webDonde').innerHTML = data.lugar.replace(/\n/g, '<br>');
+                    document.getElementById('webMapa').href = `https://maps.google.com/?q=${encodeURIComponent(data.lugar.replace(/\n/g, ' '))}`;
+                    
+                    document.getElementById('webPadrino').innerText = data.padrino || '';
+
+                    // Program
+                    if (data.programa) {
+                        const progLines = data.programa.split('\n').filter(l => l.trim() !== '');
+                        document.getElementById('webPrograma').innerHTML = progLines.map(line => `
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content"><h4>${line}</h4></div>
+                            </div>
+                        `).join('');
+                    }
+
+                    // Guests
+                    if (data.invitados) {
+                        const invLines = data.invitados.split('\n').filter(l => l.trim() !== '');
+                        document.getElementById('webInvitados').innerHTML = invLines.map(line => `<li>${line}</li>`).join('');
+                    }
+
+                    // Extra Fields
+                    if (data.extra && data.extra.length > 0) {
+                        const extraSec = document.getElementById('extraFieldsSection');
+                        extraSec.style.display = 'flex';
+                        extraSec.innerHTML = data.extra.map(field => `
+                            <div class="info-card glass-panel" style="margin-bottom: 1rem;">
+                                <h3>${field.key}</h3>
+                                <p style="margin: 0; font-size: 1.1rem;">${field.value}</p>
+                            </div>
+                        `).join('');
+                    }
+
+                    // Styles
+                    if (data.mainC) {
+                        document.documentElement.style.setProperty('--emerald-main', data.mainC);
+                        document.getElementById('bgBlob1').style.background = data.mainC;
+                    }
+                    if (data.darkC) document.documentElement.style.setProperty('--emerald-dark', data.darkC);
+                    if (data.goldC) document.documentElement.style.setProperty('--gold-main', data.goldC);
+                    if (data.font) {
+                        document.querySelectorAll('.main-title, .section-title, .padrino-name').forEach(el => {
+                            el.style.fontFamily = data.font;
+                        });
+                    }
+
+                } catch (e) {
+                    console.error('Error al cargar datos:', e);
+                }
+            }
+        }
+
+        loadData();
+
+        // Simple intersection observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Add observers after small delay to allow DOM to populate
+        setTimeout(() => {
+            document.querySelectorAll('.glass-panel, .timeline-item').forEach(el => {
+                el.classList.add('fade-in-up');
+                observer.observe(el);
+            });
+        }, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+:root {
+    /* Emerald Green Palette */
+    --emerald-dark: #003a26;
+    --emerald-main: #007a53;
+    /* Gold Accents */
+    --gold-main: #c49d47;
+    --gold-light: #e6c57a;
+    --gold-dark: #91712a;
+    /* Backgrounds */
+    --bg-cream: #fbf9f2;
+    --text-dark: #203541;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #e4e7ec;
+    color: var(--text-dark);
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar Settings */
+.sidebar {
+    width: 360px;
+    background: white;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.08);
+    z-index: 10;
+}
+
+.sidebar h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--emerald-dark);
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.control-group {
+    margin-bottom: 1.5rem;
+}
+
+.control-group h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--emerald-main);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #555;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    background: #f8f9fa;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: var(--emerald-main);
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 122, 83, 0.1);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--emerald-main);
+    border: 2px solid var(--emerald-main);
+    padding: 0.75rem;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #f0f7f4;
+}
+
+.btn-primary {
+    background: var(--emerald-main);
+    color: white;
+    border: none;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    background: var(--emerald-dark);
+}
+
+.help-text {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 1rem;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Preview Area */
+.preview-area {
+    flex: 1;
+    overflow: auto; /* Allow both X and Y scrolling */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Avoid center clipping on overflow */
+}
+
+.sheets-wrapper {
+    margin: 0 auto; /* Center when there is space, flush left when overflowing */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+}
+
+/* Print Sheet Design */
+.print-sheet {
+    width: 11in;
+    height: 8.5in;
+    background: white;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.half-page {
+    width: 5.5in;
+    height: 8.5in;
+    position: relative;
+    background: var(--bg-cream);
+    overflow: hidden;
+    border-right: 1px dashed rgba(0,0,0,0.1);
+}
+.half-page:last-child {
+    border-right: none;
+}
+
+/* Wavy abstract background pattern */
+.bg-pattern {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM42.184 0C32.128.32 27.536 1.751 19.66 5.062l-1.767.662C15.418 6.647 13.002 7.434 10.323 8H0v2h10.172c2.476-.56 4.66-1.31 6.724-1.912l1.768-.661C26.54 4.305 30.638 3.197 40 3.013c9.362.184 13.46 1.292 22.136 4.414l1.767.662c2.064.602 4.247 1.352 6.724 1.912H100V8H89.677c-2.679-.566-5.095-1.353-7.57-2.276l-1.768-.661C72.464 1.75 67.872.32 57.816 0h-15.632z' fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    z-index: 1;
+}
+
+/* Fluid Corners */
+.corner-blob {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    z-index: 3;
+}
+
+.corner-blob svg {
+    width: 100%;
+    height: 100%;
+}
+
+.blob-dark { fill: var(--emerald-dark); }
+.blob-main { fill: var(--emerald-main); }
+.blob-gold {
+    fill: none;
+    stroke: var(--gold-main);
+    stroke-width: 4;
+    transform-origin: center;
+    transform: scale(0.97);
+}
+
+.top-left { top: -20px; left: -20px; transform: rotate(0deg); }
+.top-right { top: -20px; right: -20px; transform: rotate(90deg); }
+.bottom-right { bottom: -20px; right: -20px; transform: rotate(180deg); }
+.bottom-left { bottom: -20px; left: -20px; transform: rotate(270deg); }
+
+/* Gold Border */
+.gold-border {
+    position: absolute;
+    top: 20px; left: 20px; right: 20px; bottom: 20px;
+    border: 1px solid var(--gold-main);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Content Area */
+.invitation-content {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    overflow: hidden; /* Evita que el contenido rompa el diseño */
+}
+
+.pt-large {
+    padding-top: 4.5rem;
+    padding-bottom: 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    justify-content: flex-start;
+}
+
+.header-text {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+/* Graduation Cap SVG */
+.grad-cap-wrapper {
+    width: 80px;
+    margin: 1.5rem 0;
+}
+
+.grad-cap .cap-top, .grad-cap .cap-base {
+    fill: var(--emerald-main);
+}
+.grad-cap .cap-tassel-string {
+    fill: none;
+    stroke: var(--gold-main);
+    stroke-width: 2;
+}
+.grad-cap .cap-button, .grad-cap .cap-tassel {
+    fill: var(--gold-main);
+}
+
+.title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--emerald-dark);
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.title.small {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.subtitle-gen {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: var(--gold-dark);
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+/* Date Row Styling - matching the image */
+.event-details {
+    width: 90%;
+    margin: 1rem 0;
+}
+
+.date-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.line-left, .line-right {
+    flex: 1;
+    height: 1px;
+    background-color: var(--gold-main);
+}
+
+.date-month, .date-time {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: var(--emerald-dark);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.date-day {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    color: var(--gold-dark);
+    font-weight: 700;
+    line-height: 1;
+    padding: 0 0.5rem;
+}
+
+.location {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: var(--emerald-dark);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+.padrinos-section {
+    margin-top: 1.5rem;
+}
+
+.padrino-label {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    margin-bottom: 0.2rem;
+}
+
+.padrino-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--emerald-main);
+}
+
+.footer-text {
+    margin-top: auto;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+/* Page specifics */
+.programa-list, .invitados-list {
+    text-align: left;
+    width: 100%;
+    font-size: 0.65rem;
+    line-height: 1.3;
+    color: var(--text-dark);
+    column-count: 2;
+    column-gap: 1.5rem;
+    overflow: hidden;
+}
+
+.programa-list p, .invitados-list p {
+    margin-bottom: 0.25rem;
+    break-inside: avoid;
+}
+
+.alumnos-list {
+    text-align: center;
+    width: 100%;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-dark);
+    margin-top: 1rem;
+}
+
+.alumnos-list p {
+    margin-bottom: 0.8rem;
+    border-bottom: 1px dotted rgba(0,0,0,0.1);
+    padding-bottom: 0.2rem;
+}
+
+.alumnos-list strong {
+    color: var(--emerald-dark);
+    font-size: 0.85rem;
+    display: block;
+}
+
+.alumnos-list span {
+    color: #555;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+.mt-custom {
+    margin-top: 0.5rem;
+}
+
+.padrinos-section {
+    margin-top: 0.5rem;
+}
+
+/* Editor Styles */
+.editor-handle {
+    fill: white;
+    stroke: var(--emerald-main);
+    stroke-width: 4;
+    cursor: grab;
+}
+.editor-handle:active {
+    cursor: grabbing;
+    fill: var(--gold-light);
+}
+.editor-anchor {
+    fill: var(--emerald-dark);
+    stroke: white;
+    stroke-width: 2;
+    cursor: grab;
+}
+.editor-anchor:active {
+    cursor: grabbing;
+}
+.editor-line {
+    stroke: rgba(0, 0, 0, 0.4);
+    stroke-width: 2;
+    stroke-dasharray: 4;
+}
+.editor-layer {
+    z-index: 100;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+}
+.editor-layer * {
+    pointer-events: all;
+}
+.editing-mode .corner-blob:not(.top-left) {
+    opacity: 0.5; /* Fade others during edit */
+}
+.editing-mode .corner-blob.top-left {
+    z-index: 100; /* Bring above invitation content so points are clickable */
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+
+    .app-container {
+        display: block;
+        height: auto;
+        overflow: visible;
+    }
+
+    .preview-area {
+        padding: 0;
+        background: none;
+        display: block;
+        gap: 0;
+    }
+
+    .print-sheet {
+        box-shadow: none;
+        margin: 0;
+        page-break-after: always;
+        /* Force dimensions for printing to ensure exact size */
+        width: 11in;
+        height: 8.5in;
+    }
+    
+    @page {
+        size: 11in 8.5in;
+        margin: 0;
+    }
+}
