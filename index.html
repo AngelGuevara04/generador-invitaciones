@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Dancing+Script:wght@400;600&family=Parisienne&family=Pinyon+Script&family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Dancing+Script:wght@400;600&family=Parisienne&family=Pinyon+Script&family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -50,6 +50,14 @@ Loma del Cojolite, Misantla, Ver.</textarea>
                 
                 <label>Lista de Alumnos (Uno por línea, formato: Alumno | Padrino):</label>
                 <textarea id="listaAlumnos" rows="8" placeholder="Ej: JUAN PEREZ | Madrina Ana"></textarea>
+                
+                <label style="margin-top:1rem; display:flex; align-items:center; justify-content:space-between; font-weight:600;">
+                    Tamaño de letra:
+                    <div style="display:flex; align-items:center; gap: 0.5rem;">
+                        <input type="range" id="alumnosSizeSlider" min="0.5" max="1.5" step="0.05" value="0.85" style="margin:0; width: 120px;">
+                        <span id="alumnosSizeValue" style="color:var(--emerald-main); width: 45px;">0.85rem</span>
+                    </div>
+                </label>
 
                 <label>Padrino de Generación:</label>
                 <input type="text" id="genPadrino" value="Profr. Doroteo Guzmán Cayetano">
@@ -57,30 +65,51 @@ Loma del Cojolite, Misantla, Ver.</textarea>
 
             <div class="control-group">
                 <h3>4. Programa del Evento</h3>
-                <textarea id="programaText" rows="6">01.- Entrada Bandera
-02.- Recorrido de la Escolta
-03.- Himno Nacional Mexicano
-04.- Retiro Bandera
-05.- Himno a Veracruz
-06.- Himno a Telesecundarias</textarea>
+                <label>Acto Cívico (Automáticamente se numerará):</label>
+                <textarea id="programaCivicoText" rows="4">Entrada Bandera
+Recorrido de la Escolta
+Himno Nacional Mexicano
+Retiro Bandera
+Himno a Veracruz
+Himno a Telesecundarias</textarea>
+
+                <label style="margin-top: 0.5rem;">Acto Social (Automáticamente se numerará):</label>
+                <textarea id="programaSocialText" rows="4">Presentación del presídium
+Palabras de bienvenida
+Entrega de reconocimientos
+Último pase de lista
+Palabras de despedida
+Vals de graduación</textarea>
             </div>
 
             <div class="control-group">
                 <h3>5. Invitados de Honor</h3>
-                <textarea id="invitadosText" rows="4">C. Profr. Victor Hugo Ramirez Alonso
-C. Profr. Sergio Andrés Velázquez Parada
-C. Profr. Doroteo Guzmán Cayetano</textarea>
+                <label>Formato: Nombre del Invitado | Cargo (uno por línea)</label>
+                <textarea id="invitadosText" rows="4" placeholder="Ej: Ing. Juan Pérez | Director General">C. Profr. Victor Hugo Ramirez Alonso | Supervisor Escolar
+C. Profr. Sergio Andrés Velázquez Parada | Director de la Escuela</textarea>
             </div>
 
             <div class="control-group">
                 <h3>6. Colores y Fuentes</h3>
                 <label>Fuente para Títulos y Nombres:</label>
                 <select id="fontSelector" style="width: 100%; padding: 0.75rem; border: 1px solid #ccd1d9; border-radius: 4px; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif;">
-                    <option value="'Parisienne', cursive" selected>Parisienne (Recomendada)</option>
-                    <option value="'Great Vibes', cursive">Great Vibes</option>
-                    <option value="'Alex Brush', cursive">Alex Brush</option>
-                    <option value="'Dancing Script', cursive">Dancing Script</option>
-                    <option value="'Pinyon Script', cursive">Pinyon Script</option>
+                    <optgroup label="Cursivas / Caligráficas">
+                        <option value="'Parisienne', cursive" selected>Parisienne (Recomendada)</option>
+                        <option value="'Great Vibes', cursive">Great Vibes</option>
+                        <option value="'Alex Brush', cursive">Alex Brush</option>
+                        <option value="'Dancing Script', cursive">Dancing Script</option>
+                        <option value="'Pinyon Script', cursive">Pinyon Script</option>
+                    </optgroup>
+                    <optgroup label="Elegantes / Serif">
+                        <option value="'Playfair Display', serif">Playfair Display</option>
+                        <option value="'Cinzel', serif">Cinzel</option>
+                        <option value="'Lora', serif">Lora</option>
+                    </optgroup>
+                    <optgroup label="Simples / Modernas">
+                        <option value="'Montserrat', sans-serif">Montserrat</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Lato', sans-serif">Lato</option>
+                    </optgroup>
                 </select>
 
                 <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">

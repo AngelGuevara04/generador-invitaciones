@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         generacion: document.getElementById('generacion'),
         listaAlumnos: document.getElementById('listaAlumnos'),
         genPadrino: document.getElementById('genPadrino'),
-        programaText: document.getElementById('programaText'),
+        programaCivicoText: document.getElementById('programaCivicoText'),
+        programaSocialText: document.getElementById('programaSocialText'),
         invitadosText: document.getElementById('invitadosText'),
         fontSelector: document.getElementById('fontSelector'),
         mainColor: document.getElementById('mainColor'),
@@ -18,7 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         goldColor: document.getElementById('goldColor'),
         showQr: document.getElementById('showQr'),
         qrUrl: document.getElementById('qrUrl'),
-        qrText: document.getElementById('qrText')
+        qrText: document.getElementById('qrText'),
+        alumnosSizeSlider: document.getElementById('alumnosSizeSlider'),
+        alumnosSizeValue: document.getElementById('alumnosSizeValue')
     };
 
     const previews = {
@@ -61,6 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     zoomSlider.addEventListener('input', applyZoom);
+    
+    // Alumnos Size Logic
+    inputs.alumnosSizeSlider.addEventListener('input', () => {
+        const val = inputs.alumnosSizeSlider.value;
+        inputs.alumnosSizeValue.textContent = val + 'rem';
+        localStorage.setItem('invitationAlumnosSize', val);
+        updatePreview();
+    });
 
     const extraFieldsContainer = document.getElementById('extraFieldsContainer');
     const addExtraFieldBtn = document.getElementById('addExtraFieldBtn');
@@ -127,20 +138,56 @@ document.addEventListener('DOMContentLoaded', () => {
             const alumno = parts[0] ? parts[0].trim() : '&nbsp;';
             const padrino = parts[1] ? parts[1].trim() : '&nbsp;';
             
-            htmlCol1 += `<p><strong>${alumno}</strong></p>`;
-            htmlCol2 += `<p><strong>${padrino}</strong></p>`;
+            htmlCol1 += `
+            <div class="alumno-item">
+                <div class="alumno-name"><span class="alumno-bullet">♦</span> ${alumno}</div>
+            </div>`;
+            
+            htmlCol2 += `
+            <div class="alumno-item">
+                <div class="alumno-padrino-name">${padrino}</div>
+            </div>`;
         });
-
+        
         previews.alumnosCol1.innerHTML = htmlCol1;
         previews.alumnosCol2.innerHTML = htmlCol2;
+        const formatProgram = (text) => {
+            return text.split('\n')
+                .filter(line => line.trim() !== '')
+                .map((line, idx) => {
+                    const num = (idx + 1).toString().padStart(2, '0');
+                    return `<p>${num}.- ${line}</p>`;
+                }).join('');
+        };
 
-        // Procesar Programa
-        const programaLineas = inputs.programaText.value.split('\n').filter(line => line.trim() !== '');
-        previews.programa.innerHTML = programaLineas.map(line => `<p>${line}</p>`).join('');
+        const civicoHtml = formatProgram(inputs.programaCivicoText.value);
+        const socialHtml = formatProgram(inputs.programaSocialText.value);
+        
+        let programaHtml = '';
+        if (civicoHtml) {
+            programaHtml += `<div class="program-subtitle">ACTO CÍVICO</div><div class="programa-columns">${civicoHtml}</div>`;
+        }
+        if (socialHtml) {
+            programaHtml += `<div class="program-subtitle mt-custom">ACTO SOCIAL</div><div class="programa-columns">${socialHtml}</div>`;
+        }
+        previews.programa.innerHTML = programaHtml;
 
         // Procesar Invitados
         const invitadosLineas = inputs.invitadosText.value.split('\n').filter(line => line.trim() !== '');
-        previews.invitados.innerHTML = invitadosLineas.map(line => `<p>${line}</p>`).join('');
+        previews.invitados.innerHTML = invitadosLineas.map(line => {
+            const parts = line.split('|');
+            const name = parts[0] ? parts[0].trim() : '';
+            const role = parts[1] ? parts[1].trim() : '';
+            if (role) {
+                return `<div style="margin-bottom: 0.5rem;"><div class="guest-name">${name}</div><div class="guest-role">${role}</div></div>`;
+            } else {
+                return `<div style="margin-bottom: 0.5rem;"><div class="guest-name">${name}</div></div>`;
+            }
+        }).join('');
+
+        // Aplicar tamaño de letra personalizado para alumnos
+        const baseSize = inputs.alumnosSizeSlider.value;
+        document.documentElement.style.setProperty('--alumno-base-size', `${baseSize}rem`);
 
         // Aplicar Colores
         document.documentElement.style.setProperty('--emerald-main', inputs.mainColor.value);
@@ -149,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Aplicar fuente seleccionada
         const fontName = inputs.fontSelector.value;
-        document.querySelectorAll('.title, .subtitle-gen, .alumnos-list strong').forEach(el => {
+        document.querySelectorAll('.title, .subtitle-gen, .alumnos-list, .invitados-list, .programa-list, .alumno-name').forEach(el => {
             el.style.fontFamily = fontName;
         });
 
@@ -258,6 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedZoom) {
             zoomSlider.value = savedZoom;
         }
+
+        const savedAlumnosSize = localStorage.getItem('invitationAlumnosSize');
+        if (savedAlumnosSize) {
+            inputs.alumnosSizeSlider.value = savedAlumnosSize;
+            inputs.alumnosSizeValue.textContent = savedAlumnosSize + 'rem';
+        }
     }
 
     function generateHtmlDownload() {
@@ -269,7 +322,8 @@ document.addEventListener('DOMContentLoaded', () => {
             lugar: inputs.lugar.value,
             titulo: inputs.tituloPrincipal.value,
             generacion: inputs.generacion.value,
-            programa: inputs.programaText.value,
+            programaCivico: inputs.programaCivicoText.value,
+            programaSocial: inputs.programaSocialText.value,
             invitados: inputs.invitadosText.value,
             padrino: inputs.genPadrino.value,
             alumnos: inputs.listaAlumnos.value,

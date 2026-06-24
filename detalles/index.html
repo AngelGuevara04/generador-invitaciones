@@ -142,20 +142,42 @@
                     document.getElementById('webPadrino').innerText = data.padrino || '';
 
                     // Program
-                    if (data.programa) {
-                        const progLines = data.programa.split('\n').filter(l => l.trim() !== '');
-                        document.getElementById('webPrograma').innerHTML = progLines.map(line => `
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content"><h4>${line}</h4></div>
-                            </div>
-                        `).join('');
+                    const formatWebTimeline = (text) => {
+                        return text.split('\n').filter(l => l.trim() !== '').map((line, idx) => {
+                            const num = (idx + 1).toString().padStart(2, '0');
+                            return `
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content"><h4><span style="color:var(--gold-main); margin-right:5px;">${num}.-</span> ${line}</h4></div>
+                                </div>
+                            `;
+                        }).join('');
+                    };
+
+                    let timelineHtml = '';
+                    if (data.programaCivico) {
+                        timelineHtml += `<h3 style="color: var(--emerald-light); margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem;">Acto Cívico</h3>`;
+                        timelineHtml += formatWebTimeline(data.programaCivico);
                     }
+                    if (data.programaSocial) {
+                        timelineHtml += `<h3 style="color: var(--emerald-light); margin-bottom: 1rem; margin-top: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem;">Acto Social</h3>`;
+                        timelineHtml += formatWebTimeline(data.programaSocial);
+                    }
+                    document.getElementById('webPrograma').innerHTML = timelineHtml;
 
                     // Guests
                     if (data.invitados) {
                         const invLines = data.invitados.split('\n').filter(l => l.trim() !== '');
-                        document.getElementById('webInvitados').innerHTML = invLines.map(line => `<li>${line}</li>`).join('');
+                        document.getElementById('webInvitados').innerHTML = invLines.map(line => {
+                            const parts = line.split('|');
+                            const name = parts[0] ? parts[0].trim() : '';
+                            const role = parts[1] ? parts[1].trim() : '';
+                            if (role) {
+                                return `<li><strong>${name}</strong><br><span style="font-size: 0.85rem; opacity: 0.8;">${role}</span></li>`;
+                            } else {
+                                return `<li><strong>${name}</strong></li>`;
+                            }
+                        }).join('');
                     }
 
                     // Extra Fields

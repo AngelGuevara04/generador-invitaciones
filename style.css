@@ -165,8 +165,12 @@ input[type="text"]:focus, textarea:focus {
 
 .half-page {
     width: 5.5in;
-    height: 8.5in;
+    height: 100%;
+    padding: 2.5rem;
     position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
     background: var(--bg-cream);
     overflow: hidden;
     border-right: 1px dashed rgba(0,0,0,0.1);
@@ -363,10 +367,10 @@ input[type="text"]:focus, textarea:focus {
 }
 
 /* Page specifics */
-.programa-list, .invitados-list {
+.invitados-list {
     text-align: left;
     width: 100%;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     line-height: 1.3;
     color: var(--text-dark);
     column-count: 2;
@@ -374,12 +378,107 @@ input[type="text"]:focus, textarea:focus {
     overflow: hidden;
 }
 
-.programa-list p, .invitados-list p {
-    margin-bottom: 0.25rem;
+.programa-list {
+    text-align: left;
+    width: 100%;
+}
+
+.programa-columns {
+    font-size: 0.65rem;
+    column-count: 2;
+    column-gap: 1.5rem;
+    width: 100%;
+}
+
+.programa-columns p {
+    margin-bottom: 0.1rem;
     break-inside: avoid;
+    line-height: 1.15;
+}
+
+.program-subtitle {
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: var(--gold-dark);
+    margin-bottom: 0.15rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 0.1rem;
+}
+
+.mt-custom {
+    margin-top: 0.3rem;
+}
+
+.guest-name {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--emerald-dark);
+    margin-bottom: 0.1rem;
+    break-inside: avoid;
+    line-height: 1.1;
+}
+
+.guest-role {
+    font-size: 0.55rem;
+    font-style: italic;
+    color: #555;
+    margin-bottom: 0.4rem;
+    break-inside: avoid;
+    line-height: 1.1;
 }
 
 .alumnos-list {
+    text-align: left;
+    width: 100%;
+}
+
+.alumno-item {
+    margin-bottom: 0.4rem;
+    break-inside: avoid;
+    line-height: 1.15;
+    background: linear-gradient(90deg, rgba(196,157,71,0.08) 0%, transparent 80%);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border-left: 2px solid var(--gold-main);
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--alumno-base-size, 0.85rem) * 2.2);
+}
+
+.alumno-name {
+    font-size: var(--alumno-base-size, 0.85rem);
+    color: var(--emerald-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.alumno-bullet {
+    color: var(--gold-main);
+    font-size: calc(var(--alumno-base-size, 0.85rem) * 0.75);
+}
+
+.alumno-padrino-name {
+    font-size: calc(var(--alumno-base-size, 0.85rem) * 0.88);
+    color: #555;
+    font-style: italic;
+}
+
+.alumno-padrino {
+    font-size: 0.55rem;
+    font-style: italic;
+    color: #666;
+    margin-top: 0.2rem;
+    padding-left: 0.8rem;
+}
+
+.padrino-label {
+    color: var(--gold-dark);
+    font-weight: 600;
+}
+
+.alumnos-list-old {
     text-align: center;
     width: 100%;
     font-size: 0.75rem;
