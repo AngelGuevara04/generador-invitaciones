@@ -153,44 +153,18 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.fontFamily = fontName;
         });
 
-        // Procesar QR con Data Encodificada
+        // Procesar QR con Enlace Simple
         if (inputs.showQr.checked) {
             qrSettingsBox.style.display = 'block';
             previews.qrContainerWrapper.style.display = 'flex';
             previews.previewQrText.textContent = inputs.qrText.value;
             
-            // Recopilar toda la información
-            const dataToEncode = {
-                frase: inputs.fraseText.value,
-                mes: inputs.mes.value,
-                dia: inputs.dia.value,
-                hora: inputs.hora.value,
-                lugar: inputs.lugar.value,
-                titulo: inputs.tituloPrincipal.value,
-                generacion: inputs.generacion.value,
-                programa: inputs.programaText.value,
-                invitados: inputs.invitadosText.value,
-                padrino: inputs.genPadrino.value,
-                alumnos: inputs.listaAlumnos.value,
-                font: fontName,
-                mainC: inputs.mainColor.value,
-                darkC: inputs.darkColor.value,
-                goldC: inputs.goldColor.value,
-                extra: extraFields.filter(f => f.key.trim() !== '')
-            };
-
-            const jsonString = JSON.stringify(dataToEncode);
-            const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
-            let baseUrl = inputs.qrUrl.value || 'detalles/index.html';
-            
-            // Clean up old hashes if present in input
-            if (baseUrl.includes('#')) baseUrl = baseUrl.split('#')[0];
-            const fullUrl = `${baseUrl}#data=${base64Data}`;
+            const simpleUrl = inputs.qrUrl.value || 'https://misantla.tecnm.mx/';
 
             previews.previewQr.innerHTML = ''; // Limpiar para regenerar
             
             qrCode = new QRCode(previews.previewQr, {
-                text: fullUrl,
+                text: simpleUrl,
                 width: 65,
                 height: 65,
                 colorDark : inputs.darkColor.value,
@@ -284,6 +258,60 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedZoom) {
             zoomSlider.value = savedZoom;
         }
+    }
+
+    function generateHtmlDownload() {
+        const dataToEncode = {
+            frase: inputs.fraseText.value,
+            mes: inputs.mes.value,
+            dia: inputs.dia.value,
+            hora: inputs.hora.value,
+            lugar: inputs.lugar.value,
+            titulo: inputs.tituloPrincipal.value,
+            generacion: inputs.generacion.value,
+            programa: inputs.programaText.value,
+            invitados: inputs.invitadosText.value,
+            padrino: inputs.genPadrino.value,
+            alumnos: inputs.listaAlumnos.value,
+            font: inputs.fontSelector.value,
+            mainC: inputs.mainColor.value,
+            darkC: inputs.darkColor.value,
+            goldC: inputs.goldColor.value,
+            extra: extraFields.filter(f => f.key.trim() !== '')
+        };
+
+        const jsonString = JSON.stringify(dataToEncode);
+        const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
+
+        // Attempt to fetch the template if hosted, otherwise fallback to basic structure
+        fetch('detalles/index.html')
+            .then(response => {
+                if(!response.ok) throw new Error("Local");
+                return response.text();
+            })
+            .catch(() => {
+                // Si falla (por ejemplo, en local file://), pedimos al usuario que suba la carpeta detalles
+                alert("Para generar la página estática, debes estar ejecutando este proyecto en un servidor (como GitHub Pages). Sin embargo, el QR ahora usará el enlace directo que pongas. Te recomendamos subir la carpeta 'detalles' y poner ese enlace.");
+                return null;
+            })
+            .then(html => {
+                if(!html) return;
+                
+                // Modify the HTML to include the data as a global variable instead of hash
+                let newHtml = html.replace('const hash = window.location.hash;', `const hash = '#data=${base64Data}';`);
+                
+                // Fix CSS link to be absolute or inline if needed, but relative is fine if they upload it to the same folder structure
+                const blob = new Blob([newHtml], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'pagina_detalles.html';
+                a.click();
+            });
+    }
+
+    const downloadWebBtn = document.getElementById('downloadWebBtn');
+    if (downloadWebBtn) {
+        downloadWebBtn.addEventListener('click', generateHtmlDownload);
     }
 
     function updatePaths() {
