@@ -608,8 +608,10 @@ input[type="text"]:focus, textarea:focus {
         page-break-inside: avoid !important;
         break-after: page !important;
         break-inside: avoid !important;
-        width: 10.95in !important;
-        height: 8.45in !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 11in !important;
+        max-height: 8.5in !important;
         position: relative !important;
         overflow: hidden !important;
         border: none !important;
